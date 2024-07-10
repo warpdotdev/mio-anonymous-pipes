@@ -198,8 +198,9 @@ impl Drop for EventedAnonRead {
         let thread = self.thread.take().unwrap();
 
         // Stop reader thread waiting for pipe contents
+
         unsafe {
-            CancelSynchronousIo(thread.as_raw_handle());
+            CancelSynchronousIo(std::mem::transmute(thread.as_raw_handle()));
         }
 
         thread
